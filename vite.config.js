@@ -9,6 +9,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     minify: 'esbuild',
+    target: 'esnext',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -18,18 +19,27 @@ export default defineConfig({
     }
   },
   
-  // Configuration du serveur pour Render
+  // Configuration sécurisée du serveur
   server: {
     port: process.env.PORT || 3000,
-    host: '0.0.0.0'
+    host: process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost',
+    strictPort: true,
+    // Sécurité renforcée pour le développement
+    cors: false
   },
   
-  // Configuration pour le preview (optionnel)
+  // Configuration pour le preview
   preview: {
     port: process.env.PORT || 3000,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    strictPort: true
   },
   
-  // Base URL pour les assets (ajustez si nécessaire)
-  base: './'
+  // Base URL pour les assets
+  base: './',
+  
+  // Optimisation des dépendances
+  optimizeDeps: {
+    include: ['react', 'react-dom']
+  }
 })
